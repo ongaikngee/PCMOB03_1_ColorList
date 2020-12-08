@@ -1,5 +1,5 @@
 import { StatusBar } from 'expo-status-bar';
-import React, { useState } from 'react';
+import React, { useState, useEffect } from "react";
 import { Button, StyleSheet, Text, View, TouchableOpacity } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
@@ -15,7 +15,7 @@ function HomeScreen({ navigation }) {
 
 	function renderItem({ item }) {
 		return (
-			<TouchableOpacity onPress={() => navigation.navigate('Details',  { ...item })}>
+			<TouchableOpacity onPress={() => navigation.navigate('Details', { ...item })}>
 				<BlockRGB red={item.red} green={item.green} blue={item.blue} />
 			</TouchableOpacity>
 		);
@@ -38,13 +38,20 @@ function HomeScreen({ navigation }) {
 
 	const reset = () => {
 		setColorArray([]);
-	};
+  };
+  
+  useEffect(() => {
+    navigation.setOptions({
+      headerRight: () => <Button onPress={addColor} title="Add Color" />,
+      headerLeft: () => <Button onPress={reset} title="Reset" />,
+    });
+  });
 
 	return (
 		<View style={styles.container}>
 			<View style={styles.buttonContainer}>
-				<Button title="Add Color" onPress={addColor} />
-				<Button title="Reset" onPress={reset} />
+				{/* <Button title="Add Color" onPress={addColor} />
+				<Button title="Reset" onPress={reset} /> */}
 				{/* <Button title="Details" onPress={() => navigation.navigate("DetailsScreen", { ...item })} /> */}
 			</View>
 			<FlatList contentContainerStyle={styles.list} data={colorArray} renderItem={renderItem} />
@@ -52,26 +59,22 @@ function HomeScreen({ navigation }) {
 	);
 }
 
+
+
 function DetailsScreen({ route }) {
-  // Destructure this object so we don't have to type route.params.red etc
-  const { red, green, blue } = route.params;
- 
-  return (
-    <View
-      style={[
-        styles.container,
-        { backgroundColor: `rgb(${red}, ${green}, ${blue})` },
-      ]}
-    >
-      <View style={styles.colorScreen}>
-        <Text style={styles.detailText}>Red: {red}</Text>
-        <Text style={styles.detailText}>Green: {green}</Text>
-        <Text style={styles.detailText}>Blue: {blue}</Text>
-      </View>
-    </View>
-  );
- }
- 
+	// Destructure this object so we don't have to type route.params.red etc
+	const { red, green, blue } = route.params;
+
+	return (
+		<View style={[ styles.container, { backgroundColor: `rgb(${red}, ${green}, ${blue})` } ]}>
+			<View style={styles.colorScreen}>
+				<Text style={styles.detailText}>Red: {red}</Text>
+				<Text style={styles.detailText}>Green: {green}</Text>
+				<Text style={styles.detailText}>Blue: {blue}</Text>
+			</View>
+		</View>
+	);
+}
 
 const Stack = createStackNavigator();
 
@@ -101,15 +104,14 @@ const styles = StyleSheet.create({
 	},
 	list: {
 		width: '100%'
-  },
-  colorScreen:{
-    justifyContent:"center",
-    alignItems:"center",
-    flex:1,
-  },
-  detailText: {
-    fontSize: 24,
-    marginBottom: 20,
-  },
- 
+	},
+	colorScreen: {
+		justifyContent: 'center',
+		alignItems: 'center',
+		flex: 1
+	},
+	detailText: {
+		fontSize: 24,
+		marginBottom: 20
+	}
 });
