@@ -1,17 +1,16 @@
 import { StatusBar } from 'expo-status-bar';
-import React, { useState, useEffect } from "react";
-import { Button, StyleSheet, Text, View, TouchableOpacity, Dimensions } from 'react-native';
+import React, { useState, useEffect } from 'react';
+import { Button, StyleSheet, Text, View, TouchableOpacity, TextInput } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import BlockRGB from './components/BlockRGB';
 import { FlatList } from 'react-native-gesture-handler';
+// import { Container, Header, Content, Icon, Picker, Form } from "native-base";
 
 function HomeScreen({ navigation }) {
-
-	const numColumns = 5;
-
+	const [numColumns, setNumColumns] = useState(6);
 	const [ colorArray, setColorArray ] = useState([
-		{ red: 255, green: 255, blue: 0, col:numColumns, id: '0' },
+		{ red: 255, green: 255, blue: 0, col: numColumns, id: '0' }
 		// { red: 0, green: 255, blue: 0, id: '1' },
 		// { red: 0, green: 0, blue: 255, id: '2' }
 	]);
@@ -19,7 +18,7 @@ function HomeScreen({ navigation }) {
 	function renderItem({ item }) {
 		return (
 			<TouchableOpacity onPress={() => navigation.navigate('Details', { ...item })}>
-				<BlockRGB red={item.red} green={item.green} blue={item.blue} col={item.col}/>
+				<BlockRGB red={item.red} green={item.green} blue={item.blue} col={item.col} />
 			</TouchableOpacity>
 		);
 	}
@@ -42,28 +41,45 @@ function HomeScreen({ navigation }) {
 
 	const reset = () => {
 		setColorArray([]);
-  };
-  
-  useEffect(() => {
-    navigation.setOptions({
-      headerRight: () => <Button onPress={addColor} title="Add Color" />,
-      headerLeft: () => <Button onPress={reset} title="Reset" />,
-    });
-  });
+	};
+
+	// const changeCol = (coooo) =>{
+	// 	alert(coooo);
+	// 	reset();
+	// 	setNumColumns(coooo);
+	// }
+
+	// const increase = () => {
+	// 	setNumColumns(numColumns+1);
+
+	// 	setColorArray([...colorArray]);
+
+	// };
+	// const decrease = () => setNumColumns(numColumns -1);
+
+	useEffect(() => {
+		navigation.setOptions({
+			headerRight: () => <Button onPress={addColor} title="Add Color" />,
+			headerLeft: () => <Button onPress={reset} title="Reset" />
+		});
+	});
 
 	return (
 		<View style={styles.container}>
 			<View style={styles.buttonContainer}>
-				{/* <Button title="Add Color" onPress={addColor} />
-				<Button title="Reset" onPress={reset} /> */}
-				{/* <Button title="Details" onPress={() => navigation.navigate("DetailsScreen", { ...item })} /> */}
+				<Text style={styles.detailText}>Number of Column: {numColumns}</Text>
+				{/* <Button onPress={increase} title="+" />
+				<Button onPress={decrease} title="-" /> */}
 			</View>
-			<FlatList contentContainerStyle={styles.list} data={colorArray} renderItem={renderItem} numColumns={numColumns} />
+			<FlatList
+				contentContainerStyle={styles.list}
+				data={colorArray}
+				renderItem={renderItem}
+				numColumns={numColumns}
+			/>
 		</View>
 	);
 }
-
-
 
 function DetailsScreen({ route }) {
 	// Destructure this object so we don't have to type route.params.red etc

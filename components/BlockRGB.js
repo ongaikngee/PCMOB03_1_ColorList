@@ -2,10 +2,10 @@ import React from 'react';
 import { Text, View, StyleSheet, Dimensions } from 'react-native';
 
 export default function BlockRGB(props) {
-  // console.log(props);
+	// console.log(props);
 
 	const screenWidth = Dimensions.get('window').width;
-  const numColumns = props.col;
+	const numColumns = props.col;
 	const tileSize = screenWidth / numColumns;
 
 	return (
@@ -14,11 +14,11 @@ export default function BlockRGB(props) {
 				backgroundColor: `rgb(${props.red}, ${props.green}, ${props.blue})`,
 				padding: 30,
 				width: tileSize,
-        height: tileSize,
-        // height: 100,
-        // flex:1,
-        // aspectRatio:1,
-        // flex:1/numColumns,
+				height: tileSize
+				// height: 100,
+				// flex:1,
+				// aspectRatio:1,
+				// flex:1/numColumns,
 			}}
 		/>
 	);
